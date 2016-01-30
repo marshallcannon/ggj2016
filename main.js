@@ -1,8 +1,8 @@
 var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
 
-function preload() {
+var socket = io();
 
-  game.load.image('player', 'assets/player.png');
+function preload() {
 
 }
 
@@ -10,17 +10,17 @@ var player;
 
 function create() {
 
+  game.state.add('desktop', DesktopState, false);
+  game.state.add('mobile', MobileState, false);
+
   //DESKTOP
   if(this.game.device.desktop)
   {
-    
+    game.state.start('desktop');
   }
   //MOBILE
   else {
-
-    game.scale.setUserScale(window.innerWidth/480, window.innerHeight/800, 0, 0);
-    game.scale.scaleMode = Phaser.ScaleManager.USER_SCALE;
-
+    game.state.start('mobile');
   }
 
 }
