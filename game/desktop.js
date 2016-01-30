@@ -12,7 +12,15 @@ DesktopState.prototype.create = function() {
   console.log("Starting desktop app");
 
   //Create player
-  this.player = new Player();
-  game.add.existing(this.player);
+  player = new Player();
+  game.add.existing(player);
+
+  cursors = game.input.keyboard.createCursorKeys();
+
+};
+
+DesktopState.prototype.update = function() {
+
+  
 
 };
