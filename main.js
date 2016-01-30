@@ -13,10 +13,13 @@ function create() {
   //DESKTOP
   if(this.game.device.desktop)
   {
-
+    
   }
   //MOBILE
   else {
+
+    game.scale.setUserScale(window.innerWidth/480, window.innerHeight/800, 0, 0);
+    game.scale.scaleMode = Phaser.ScaleManager.USER_SCALE;
 
   }
 
