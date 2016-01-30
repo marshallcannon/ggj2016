@@ -11,21 +11,29 @@ Player.prototype.update = function() {
 
   if(cursors.up.isDown)
   {
-    player.y -= this.speed;
+    this.move(0, this.speed*-1);
   }
   else if(cursors.down.isDown)
   {
-    player.y += this.speed;
+    this.move(0, this.speed);
   }
 
   if(cursors.left.isDown)
   {
-    player.x -= this.speed;
+    this.move(this.speed*-1, 0);
   }
   else if(cursors.right.isDown)
   {
-    player.x += this.speed;
+    this.move(this.speed, 0);
   }
 
+};
+
+Player.prototype.move = function(x, y) {
+
+  if(this.x + this.width + x < game.world.width && this.x + x > 0)
+    this.x += x;
+  if(this.y + this.height + y < game.world.height && this.y + y > 0)
+    this.y += y;
 
 };
