@@ -9,7 +9,17 @@ function preload() {
 var player;
 
 function create() {
-  
+
+  //DESKTOP
+  if(this.game.device.desktop)
+  {
+
+  }
+  //MOBILE
+  else {
+
+  }
+
 }
 
 function update() {
