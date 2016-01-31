@@ -13,10 +13,10 @@ function Animal(x, y, key) {
   this.pen = null;
   this.motX = 0;
   this.motY = 0;
-  this.hb = new Phaser.Rectangle(0, 0, this.width, this.height);
+  this.hb = new Phaser.Rectangle(x, y, this.width, this.height);
   this.hb.offsetX = Math.abs(this.width)/2;
   this.hb.offsetY = Math.abs(this.height)/2;
-  this.updateHB();
+  this.updateSprite();
 
   //Animations
   this.animations.add('run', [0,1], 5, true);
@@ -84,24 +84,24 @@ Animal.prototype.booted = function(xSpeed, ySpeed) {
 Animal.prototype.move = function(x, y) {
 
   if(this.hb.x + this.hb.width + x < game.world.width && this.hb.x + x > 0)
-    this.x += x;
+    this.hb.x += x;
   else {
     this.motX *= -1;
   }
   if(this.hb.y + this.hb.height + y < game.world.height && this.hb.y + y > 0)
-    this.y += y;
+    this.hb.y += y;
   else {
     this.motY *= -1;
   }
-  this.updateHB();
+  this.updateSprite();
 
 };
 
 //Move animal to absolute position
 Animal.prototype.setPosition = function(x, y) {
-  this.x = x;
-  this.y = y;
-  this.updateHB();
+  this.hb.x = x;
+  this.hb.y = y;
+  this.updateSprite();
 };
 
 Animal.prototype.setAttributes = function(head, coat, ped) {
@@ -121,9 +121,9 @@ Animal.prototype.setAttributes = function(head, coat, ped) {
 
 };
 
-Animal.prototype.updateHB = function() {
-  this.hb.x = this.x-this.hb.offsetX;
-  this.hb.y = this.y-this.hb.offsetY;
+Animal.prototype.updateSprite = function() {
+  this.x = this.hb.x-this.hb.offsetX;
+  this.y = this.hb.y-this.hb.offsetY;
 };
 
 Animal.prototype.uncage = function() {
@@ -138,18 +138,18 @@ Animal.prototype.uncage = function() {
 function HornsSolidQuad(x, y) {
   Animal.call(this, x, y, 'horns-solid-quad');
   this.setAttributes('horns', 'solid', 'quad');
-  this.hb = new Phaser.Rectangle(this.x-25, this.y-3, 50, 35);
-  this.hb.offsetX = 25;
-  this.hb.offsetY = 3;
+  this.hb = new Phaser.Rectangle(this.x-22, this.y+4, 50, 30);
+  this.hb.offsetX = -22;
+  this.hb.offsetY = 4;
 }
 HornsSolidQuad.prototype = Object.create(Animal.prototype);
 
 function AntSolidQuad(x, y) {
   Animal.call(this, x, y, 'ant-solid-quad');
   this.setAttributes('ant', 'solid', 'quad');
-  this.hb = new Phaser.Rectangle(this.x-15, this.y+1, 33, 32);
-  this.hb.offsetX = 15;
-  this.hb.offsetY = -1;
+  this.hb = new Phaser.Rectangle(this.x-15, this.y+7, 33, 25);
+  this.hb.offsetX = -15;
+  this.hb.offsetY = 7;
 }
 AntSolidQuad.prototype = Object.create(Animal.prototype);
 
@@ -160,8 +160,8 @@ function HornsStripesQuad(x, y) {
 function AntStripesQuad(x, y) {
   Animal.call(this, x, y, 'ant-stripes-quad');
   this.setAttributes('ant', 'stripes', 'quad');
-  this.hb = new Phaser.Rectangle(this.x-25, this.y+4, 50, 28);
-  this.hb.offsetX = 25;
-  this.hb.offsetY = -4;
+  this.hb = new Phaser.Rectangle(this.x-18, this.y+14, 45, 18);
+  this.hb.offsetX = -18;
+  this.hb.offsetY = 14;
 }
 AntStripesQuad.prototype = Object.create(Animal.prototype);

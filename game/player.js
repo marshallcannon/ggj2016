@@ -1,7 +1,7 @@
 function Player() {
 
   Phaser.Sprite.call(this, game, 100, 100, 'player');
-  this.hb = new Phaser.Rectangle(0, 0, 32, 30);
+  this.hb = new Phaser.Rectangle(0, 0, 32, 24);
   this.updateHB();
   this.anchor.setTo(0.5, 0.5);
   this.kicking = false;
@@ -91,8 +91,8 @@ Player.prototype.boot = function(target) {
     directionY = -1;
 
   //Calculate velocity
-  var disX = target.hb.x - this.hb.x;
-  var disY = target.hb.y - this.hb.y;
+  var disX = (target.hb.x + target.hb.width/2) - (this.hb.x + this.hb.width/2);
+  var disY = (target.hb.y + target.hb.height - 9) - (this.hb.y + this.hb.height - 9);
   var distance = disX*disX + disY*disY;
   var motX = (disX*disX)/distance;
   var motY = (disY*disY)/distance;
@@ -109,6 +109,6 @@ Player.prototype.setPosition = function(x, y) {
 Player.prototype.updateHB = function() {
 
   this.hb.x = this.x - 16;
-  this.hb.y = this.y+4;
+  this.hb.y = this.y + 10;
 
 };

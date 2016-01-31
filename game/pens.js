@@ -45,7 +45,7 @@ Pen.prototype.grabAnimal = function(animal) {
   this.animal.caged = true;
   this.animal.motX = 0;
   this.animal.motY = 0;
-  this.animal.setPosition(this.x + this.width/2, this.y + this.height/4);
+  this.animal.setPosition(this.x + 8, this.y + 8);
   this.animal.pen = this;
 
   if(this.checkSatisfied())

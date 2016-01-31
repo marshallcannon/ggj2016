@@ -72,7 +72,10 @@ DesktopState.checkWin = function() {
     if(!penList[i].satisfied)
       return false;
   }
-  this.nextLevel();
+  var self = this;
+  setTimeout(function(){
+    self.nextLevel();
+    self.clearStage();}, 500);
   return true;
 
 };
@@ -80,4 +83,10 @@ DesktopState.checkWin = function() {
 DesktopState.nextLevel = function() {
   this.currentLevel = levels[levels.indexOf(this.currentLevel)+1];
   socket.emit('setLevel', levels.indexOf(this.currentLevel));
+};
+
+DesktopState.clearStage = function() {
+  actorLayer.removeAll();
+  animalList = [];
+  penList = [];
 };
