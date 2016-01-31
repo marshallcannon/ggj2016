@@ -59,6 +59,10 @@ socket.on('penUpdate', function(msg){
   else if(msg.satisfied === -1)
     clueList[msg.id].frame = 0;
 });
+socket.on('setLevel', function(msg){
+  this.currentLevel = levels[msg];
+  console.log(this.currentLevel);
+});
 
 //Clue Pens
 function CluePen(x, y, clue) {

@@ -18,6 +18,10 @@ io.on('connection', function(socket){
   socket.on('disconnect', function(){
     console.log('Player disconnected...');
   });
+
+  socket.on('setLevel', function(msg){
+    socket.broadcast.emit('setLevel', msg);
+  });
 });
 
 http.listen(3000, function(){

@@ -38,3 +38,4 @@ var level2 = {};
 
 //Add levels to array
 levels.push(level1);
+levels.push(level2);

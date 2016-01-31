@@ -72,7 +72,12 @@ DesktopState.checkWin = function() {
     if(!penList[i].satisfied)
       return false;
   }
-  console.log('Win!');
+  this.nextLevel();
   return true;
 
+};
+
+DesktopState.nextLevel = function() {
+  this.currentLevel = levels[levels.indexOf(this.currentLevel)+1];
+  socket.emit('setLevel', levels.indexOf(this.currentLevel));
 };
