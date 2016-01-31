@@ -8,6 +8,7 @@ function Player() {
 
   this.animations.add('idle', [11,12,13,14,15], 5, true);
   this.animations.add('run', [0,1,2,3,4,5,6,7,8,9,10], 20, true);
+  this.animations.add('kick', [22,23,24], 20, false);
   this.animations.play('idle');
 
 }
@@ -36,7 +37,10 @@ Player.prototype.update = function() {
 
   //Sloppy animation check, next time I'll just keep track of his speed with a variable
   if(!this.kicking && !cursors.left.isDown && !cursors.right.isDown && !cursors.up.isDown && !cursors.down.isDown)
-    this.animations.play('idle');
+  {
+    if(this.animations.currentAnim !== this.animations.getAnimation('kick') || this.animations.currentAnim.isFinished === true)
+      this.animations.play('idle');
+  }
 
 };
 
@@ -52,7 +56,8 @@ Player.prototype.move = function(x, y) {
   else {
     this.scale.x = -1;
   }
-  this.animations.play('run');
+  if(this.animations.currentAnim !== this.animations.getAnimation('kick') || this.animations.currentAnim.isFinished === true)
+    this.animations.play('run');
 
   this.updateHB();
 
@@ -65,6 +70,9 @@ Player.prototype.kick = function() {
     if(checkCollide(this.hb, animalList[i].hb))
       this.boot(animalList[i]);
   }
+
+  //animation
+  this.animations.play('kick');
 
 };
 
@@ -88,7 +96,7 @@ Player.prototype.boot = function(target) {
   var distance = disX*disX + disY*disY;
   var motX = (disX*disX)/distance;
   var motY = (disY*disY)/distance;
-  target.booted(motX * 8 * directionX, motY * 8 * directionY);
+  target.booted(motX * 16 * directionX, motY * 16 * directionY);
 
 };
 

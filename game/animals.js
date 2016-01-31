@@ -9,6 +9,7 @@ function Animal(x, y, key) {
 
   this.flying = false;
   this.caged = false;
+  this.cageable = true;
   this.pen = null;
   this.motX = 0;
   this.motY = 0;
@@ -32,19 +33,17 @@ Animal.prototype = Object.create(Phaser.Sprite.prototype);
 
 Animal.prototype.update = function() {
 
-  if(!this.caged)
-  {
-    if(this.flying)
-    {
-      this.move(this.motX, this.motY);
-      this.motX *= 0.95;
-      this.motY *= 0.95;
 
-      if(Math.abs(this.motX) < 0.5 && Math.abs(this.motY) < 0.5)
-      {
-        this.motX = 0;
-        this.motY = 0;
-      }
+  if(this.flying)
+  {
+    this.move(this.motX, this.motY);
+    this.motX *= 0.95;
+    this.motY *= 0.95;
+
+    if(Math.abs(this.motX) < 0.5 && Math.abs(this.motY) < 0.5)
+    {
+      this.motX = 0;
+      this.motY = 0;
     }
   }
   if(this.motX === 0 && this.motY === 0)
@@ -71,7 +70,11 @@ Animal.prototype.booted = function(xSpeed, ySpeed) {
   this.motX = xSpeed;
   this.motY = ySpeed;
   this.flying = true;
-  this.caged = false;
+  if(this.caged)
+  {
+    var contextAnimal = this;
+    setTimeout(function(){contextAnimal.uncage();}, 100);
+  }
   if(this.pen)
     this.pen.releaseAnimal();
 
@@ -123,6 +126,10 @@ Animal.prototype.updateHB = function() {
   this.hb.y = this.y-this.hb.offsetY;
 };
 
+Animal.prototype.uncage = function() {
+  this.caged = false;
+};
+
 
 /***************************************
 **********ANIMAL VARIATIONS*************
@@ -145,3 +152,16 @@ function AntSolidQuad(x, y) {
   this.hb.offsetY = -1;
 }
 AntSolidQuad.prototype = Object.create(Animal.prototype);
+
+function HornsStripesQuad(x, y) {
+
+}
+
+function AntStripesQuad(x, y) {
+  Animal.call(this, x, y, 'ant-stripes-quad');
+  this.setAttributes('ant', 'stripes', 'quad');
+  this.hb = new Phaser.Rectangle(this.x-25, this.y+4, 50, 28);
+  this.hb.offsetX = 25;
+  this.hb.offsetY = -4;
+}
+AntStripesQuad.prototype = Object.create(Animal.prototype);

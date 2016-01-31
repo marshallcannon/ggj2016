@@ -49,12 +49,15 @@ function gofull() {
 
 //Socket.io events
 socket.on('penUpdate', function(msg){
-  console.log(msg);
-  if(msg.satisfied)
+  //Correct
+  if(msg.satisfied === 1)
     clueList[msg.id].frame = 2;
-  else {
+  //Incorrect
+  else if(msg.satisfied === 0)
     clueList[msg.id].frame = 1;
-  }
+  //Empty
+  else if(msg.satisfied === -1)
+    clueList[msg.id].frame = 0;
 });
 
 //Clue Pens

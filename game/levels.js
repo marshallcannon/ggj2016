@@ -17,6 +17,8 @@ var level1 = {
     //animals
     var animal1 = new HornsSolidQuad(300, 300);
     var animal2 = new AntSolidQuad(400, 100);
+    var animal3 = new AntStripesQuad(350, 500);
+    var animal4 = new AntStripesQuad(400, 500);
 
   },
 
