@@ -11,6 +11,13 @@ MobileState.prototype.preload = function() {
   game.load.image('stripes', 'assets/mobile/stripes.png');
   game.load.image('solid', 'assets/mobile/solid.png');
 
+  game.load.image('readyButton', 'assets/readyButton.png');
+  game.load.image('waiting', 'assets/waitingButton.png');
+  game.load.image('exitButton', 'assets/exitButton.png');
+  game.load.image('winText', 'assets/winText.png');
+  game.load.image('loseText', 'assets/loseText.png');
+  game.load.image('completeText', 'assets/completeText.png');
+
 };
 
 MobileState.prototype.create = function() {
@@ -22,6 +29,16 @@ MobileState.prototype.create = function() {
     game.scale.fullScreenScaleMod = Phaser.ScaleManager.EXACT_FIT;
     //game.input.onDown.add(gofull, this);
     game.stage.backgroundColor = '#FFCC99';
+
+    //Menu Stuff
+    winText = game.add.sprite(game.width/2 - 200, -200, 'winText');
+    loseText = game.add.sprite(game.width/2 - 200, -200, 'loseText');
+    completeText = game.add.sprite(game.width/2 - 200, -200, 'completeText');
+    waitingSprite = game.add.sprite(game.width/2 - 200, -200, 'waiting');
+    desktopReadyButton = game.add.button(game.width/2 - 200, -200, 'readyButton', DesktopState.prototype.readyUp);
+    desktopExitButton = game.add.button(game.width/2 - 200, -200, 'exitButton', DesktopState.prototype.restart);
+    mobileReadyButton = game.add.button(game.width/2 - 200, -200, 'readyButton', MobileState.prototype.readyUp);
+    mobileExitButton = game.add.button(game.width/2 - 200, -200, 'exitButton', MobileState.prototype.restart);
 
     //List of all clue pens
     clueList = [];
@@ -40,17 +57,79 @@ MobileState.prototype.create = function() {
 
 MobileState.prototype.update = function() {
 
+  if(desktopReady && mobileReady)
+    MobileState.prototype.startLevel();
+
 };
 
 MobileState.prototype.readyUp = function() {
 
-  readyButton.y = -200;
+  mobileReadyButton.y = -200;
+  mobileReady = true;
   socket.emit('readyUp', {});
 
 };
 
+MobileState.prototype.showWinMenu = function() {
+
+  winText.y = game.height/2-80-200;
+  waitingSprite.y = game.height/2-80;
+  mobileReadyButton.y = game.height/2-80;
+
+};
+
+MobileState.prototype.hideWinMenu = function() {
+
+  winText.y = -200;
+  waitingSprite.y = -200;
+  mobileReadyButton.y = -200;
+
+};
+
+MobileState.prototype.showLoseMenu = function() {
+
+  loseText.y = game.height/2-80-200;
+  waitingSprite.y = game.height/2-waitingSprite.height/2;
+  mobileReadyButton.y = game.height/2-waitingSprite.height/2;
+  mobileExitButton.y = game.height/2-waitingSprite.height/2+200;
+
+};
+
+MobileState.prototype.hideLoseMenu = function() {
+
+  loseText.y = -200;
+  waitingSprite.y = -200;
+  mobileReadyButton.y = -200;
+  mobileExitButton.y = -200;
+
+};
+
+MobileState.prototype.showCompleteMenu = function() {
+
+  completeText.y = game.height/2-80-200;
+  mobileExitButton.y = game.height/2-80;
+
+};
+
+MobileState.prototype.hideCompleteMenu = function() {
+
+  completeText.y = -200;
+  mobileExitButton.y = -200;
+
+};
+
+MobileState.prototype.restart = function() {
+
+  MobileState.clearStage();
+  game.state.start('mobile');
+
+};
+
 MobileState.prototype.startLevel = function() {
-  this.currentLevel.loadMobile();
+  game.state.getCurrentState().currentLevel.loadMobile();
+  MobileState.prototype.hideWinMenu();
+  MobileState.prototype.hideLoseMenu();
+
 };
 
 MobileState.prototype.clearStage = function() {
@@ -89,6 +168,11 @@ socket.on('setLevel', function(msg){
 socket.on('readyUp', function(msg){
   desktopReady = true;
 });
+socket.on('win', function(msg){
+  console.log('win!');
+  MobileState.prototype.clearStage();
+  MobileState.prototype.showWinMenu();
+});
 
 //Clue Pens
 function CluePen(x, y, clue) {
@@ -96,6 +180,7 @@ function CluePen(x, y, clue) {
   Phaser.Sprite.call(this, game, x, y, 'cluePen');
   game.add.existing(this);
   clueList.push(this);
+  clueLayer.add(this);
 
   if(clue === 'horns' || clue === 'ant' || clue === 'stripes' || clue === 'solid' || clue === 'biped' || clue === 'quad')
     this.clue = clue;
@@ -103,6 +188,7 @@ function CluePen(x, y, clue) {
     console.log('Invalid clue: ' + clue);
 
   this.clueImage = game.add.sprite(this.x, this.y, this.clue);
+  clueLayer.add(this.clueImage);
 
 }
 CluePen.prototype = Object.create(Phaser.Sprite.prototype);

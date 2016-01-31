@@ -6,17 +6,9 @@ var levels = [];
 
 function preload() {
 
-  game.load.image('readyButton', 'assets/readyButton.png');
-  game.load.image('waiting', 'assets/waitingButton.png');
-  game.load.image('exitButton', 'assets/exitButton.png');
-
 }
 
 function create() {
-
-  //Menu stuff
-  waitingSprite = game.add.sprite(game.width/2 - 200, -200, 'waiting');
-  readyButton = game.add.button(game.width/2 - 200, -200, 'readyButton', DesktopState.prototype.readyUp);
 
   game.state.add('desktop', DesktopState, false);
   game.state.add('mobile', MobileState, false);

@@ -39,7 +39,17 @@ var level1 = {
 
 };
 
-var level2 = {};
+var level2 = {
+
+  loadDesktop: function() {
+
+  },
+
+  loadMobile: function() {
+    
+  }
+
+};
 
 //Add levels to array
 levels.push(level1);

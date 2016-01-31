@@ -9,6 +9,12 @@ DesktopState.prototype.preload = function() {
   game.load.image('background', 'assets/backGround.png');
   game.load.image('shadow', 'assets/shadow.png');
 
+  game.load.image('readyButton', 'assets/readyButton.png');
+  game.load.image('waiting', 'assets/waitingButton.png');
+  game.load.image('exitButton', 'assets/exitButton.png');
+  game.load.image('winText', 'assets/winText.png');
+  game.load.image('loseText', 'assets/loseText.png');
+  game.load.image('completeText', 'assets/completeText.png');
 
   //Load animals
   game.load.spritesheet('horns-solid-quad', 'assets/animals/animal-horns-solid-quadruped.png', 64, 64);
@@ -18,17 +24,33 @@ DesktopState.prototype.preload = function() {
 
   game.load.spritesheet('ant-stripes-biped', 'assets/animals/animal-ant-stripes-biped.png', 64, 64);
 
+  //Music
+  //game.load.audio('song', 'assets/song.wav');
+
 };
 
 DesktopState.prototype.create = function() {
 
   console.log("Starting desktop app");
 
+  //song = game.add.audio('song');
+  //song.play();
+
   //Create groups
   backgroundLayer = game.add.group();
   shadowLayer = game.add.group();
   actorLayer = game.add.group();
   guiLayer = game.add.group();
+
+  //Menu Stuff
+  winText = game.add.sprite(game.width/2 - 200, -200, 'winText');
+  loseText = game.add.sprite(game.width/2 - 200, -200, 'loseText');
+  completeText = game.add.sprite(game.width/2 - 200, -200, 'completeText');
+  waitingSprite = game.add.sprite(game.width/2 - 200, -200, 'waiting');
+  desktopReadyButton = game.add.button(game.width/2 - 200, -200, 'readyButton', DesktopState.prototype.readyUp);
+  desktopExitButton = game.add.button(game.width/2 - 200, -200, 'exitButton', DesktopState.prototype.restart);
+  mobileReadyButton = game.add.button(game.width/2 - 200, -200, 'readyButton', MobileState.prototype.readyUp);
+  mobileExitButton = game.add.button(game.width/2 - 200, -200, 'exitButton', MobileState.prototype.restart);
 
   //Create arrays
   animalList = [];
@@ -60,6 +82,9 @@ DesktopState.prototype.update = function() {
 
   actorLayer.sort('y', Phaser.Group.SORT_ASCENDING);
 
+  if(mobileReady && desktopReady)
+    this.startLevel();
+
 };
 
 DesktopState.prototype.render = function() {
@@ -83,7 +108,9 @@ DesktopState.prototype.checkWin = function() {
   var self = this;
   setTimeout(function(){
     self.nextLevel();
-    self.clearStage();}, 500);
+    self.clearStage();
+    self.showWinMenu();
+    socket.emit('win', {});}, 500);
   return true;
 
 };
@@ -108,38 +135,65 @@ DesktopState.prototype.startLevel = function() {
 
 DesktopState.prototype.readyUp = function() {
 
-  readyButton.y = -200;
+  desktopReadyButton.y = -200;
   socket.emit('readyUp', {});
 
 };
 
-showWinMenu = function() {
+DesktopState.prototype.showWinMenu = function() {
 
+  console.log('win!');
+  winText.y = game.height/2-80-200;
+  console.log(winText.x, winText.y);
   waitingSprite.y = game.height/2-waitingSprite.height/2;
-  readyButton.y = game.height/2-readyButton.height/2;
+  desktopReadyButton.y = game.height/2-80;
 
 };
 
-hideWinMenu = function() {
+DesktopState.prototype.hideWinMenu = function() {
 
+  winText.y = -200;
   waitingSprite.y = -200;
-  readyButton.y = -200;
+  desktopReadyButton.y = -200;
 
 };
 
-showLoseMenu = function() {
+DesktopState.prototype.showLoseMenu = function() {
+
+  loseText.y = game.height/2-80-200;
+  waitingSprite.y = game.height/2-waitingSprite.height/2;
+  desktopReadyButton.y = game.height/2-waitingSprite.height/2;
+  desktopExitButton.y = game.height/2-waitingSprite.height/2+200;
 
 };
 
-hideLoseMenu = function() {
+DesktopState.prototype.hideLoseMenu = function() {
+
+  loseText.y = -200;
+  waitingSprite.y = -200;
+  desktopReadyButton.y = -200;
+  desktopExitButton.y = -200;
 
 };
 
-showCompleteMenu = function() {
+DesktopState.prototype.showCompleteMenu = function() {
+
+  completeText.y = game.height/2-80-200;
+  desktopExitButton.y = game.height/2-80;
 
 };
 
-hideCompleteMenu = function() {
+DesktopState.prototype.hideCompleteMenu = function() {
+
+  completeText.y = -200;
+  desktopExitButton.y = -200;
+
+};
+
+DesktopState.prototype.restart = function() {
+
+  DesktopState.clearStage();
+  game.state.start('desktop');
 
 };
 
@@ -148,4 +202,7 @@ hideCompleteMenu = function() {
 //Socket.io events
 socket.on('readyUp', function(msg){
   mobileReady = true;
+});
+socket.on('restart', function(msg){
+  Desktop.prototype.restart();
 });

@@ -23,8 +23,14 @@ io.on('connection', function(socket){
     socket.broadcast.emit('setLevel', msg);
   });
 
-  socket.on('readUp', function(msg){
+  socket.on('readyUp', function(msg){
+    console.log('ready!');
     socket.broadcast.emit('readyUp', msg);
+  });
+
+  socket.on('win', function(msg){
+    console.log('win!');
+    socket.broadcast.emit('win', msg);
   });
 });
 
