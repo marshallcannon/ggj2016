@@ -99,7 +99,7 @@ Animal.prototype.booted = function(xSpeed, ySpeed) {
   if(this.caged)
   {
     var contextAnimal = this;
-    setTimeout(function(){contextAnimal.uncage();}, 100);
+    setTimeout(function(){contextAnimal.uncage();}, 200);
   }
   if(this.pen)
     this.pen.releaseAnimal();
@@ -196,8 +196,13 @@ function AntSolidQuad(x, y) {
 AntSolidQuad.prototype = Object.create(Animal.prototype);
 
 function HornsStripesQuad(x, y) {
-
+  Animal.call(this, x, y, 'horns-stripes-quad');
+  this.setAttributes('horns', 'stripes', 'quad');
+  this.hb = new Phaser.Rectangle(this.x-18, this.y+14, 45, 18);
+  this.hb.offsetX = -18;
+  this.hb.offsetY = 14;
 }
+HornsStripesQuad.prototype = Object.create(Animal.prototype);
 
 function AntStripesQuad(x, y) {
   Animal.call(this, x, y, 'ant-stripes-quad');
@@ -207,3 +212,39 @@ function AntStripesQuad(x, y) {
   this.hb.offsetY = 14;
 }
 AntStripesQuad.prototype = Object.create(Animal.prototype);
+
+function HornsSolidBiped(x, y) {
+  Animal.call(this, x, y, 'horns-solid-biped');
+  this.setAttributes('horns', 'solid', 'biped');
+  this.hb = new Phaser.Rectangle(this.x-12, this.y+4, 25, 30);
+  this.hb.offsetX = -12;
+  this.hb.offsetY = 4;
+}
+HornsSolidBiped.prototype = Object.create(Animal.prototype);
+
+function AntSolidBiped(x, y) {
+  Animal.call(this, x, y, 'ant-solid-biped');
+  this.setAttributes('ant', 'solid', 'biped');
+  this.hb = new Phaser.Rectangle(this.x-12, this.y+4, 25, 30);
+  this.hb.offsetX = -12;
+  this.hb.offsetY = 4;
+}
+AntSolidBiped.prototype = Object.create(Animal.prototype);
+
+function HornsStripesBiped(x, y) {
+  Animal.call(this, x, y, 'horns-stripes-biped');
+  this.setAttributes('horns', 'stripes', 'biped');
+  this.hb = new Phaser.Rectangle(this.x-12, this.y+4, 25, 30);
+  this.hb.offsetX = -12;
+  this.hb.offsetY = 4;
+}
+HornsStripesBiped.prototype = Object.create(Animal.prototype);
+
+function AntStripesBiped(x, y) {
+  Animal.call(this, x, y, 'ant-stripes-biped');
+  this.setAttributes('ant', 'stripes', 'biped');
+  this.hb = new Phaser.Rectangle(this.x-12, this.y+4, 25, 30);
+  this.hb.offsetX = -12;
+  this.hb.offsetY = 4;
+}
+AntStripesBiped.prototype = Object.create(Animal.prototype);

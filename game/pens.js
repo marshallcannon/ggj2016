@@ -1,7 +1,7 @@
 function Pen(x, y) {
 
   Phaser.Sprite.call(this, game, x, y, 'pen');
-  this.hb = new Phaser.Rectangle(x+12, y+12, 24, 24);
+  this.hb = new Phaser.Rectangle(x, y, 80, 83);
   game.add.existing(this);
   penList.push(this);
   actorLayer.add(this);
@@ -46,7 +46,7 @@ Pen.prototype.grabAnimal = function(animal) {
   this.animal.caged = true;
   this.animal.motX = 0;
   this.animal.motY = 0;
-  this.animal.setPosition(this.x + 8, this.y + 8);
+  this.animal.setPosition(this.x + 16, this.y + 26);
   this.animal.pen = this;
 
   if(this.checkSatisfied())
@@ -68,6 +68,7 @@ Pen.prototype.grabAnimal = function(animal) {
 
 Pen.prototype.releaseAnimal = function(animal) {
 
+  this.animal.pen = null;
   this.animal = null;
   this.satisfied = false;
   socket.emit('penUpdate', {id: penList.indexOf(this), satisfied: -1});

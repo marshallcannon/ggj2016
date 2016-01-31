@@ -19,13 +19,15 @@ DesktopState.prototype.preload = function() {
   //Load animals
   game.load.spritesheet('horns-solid-quad', 'assets/animals/animal-horns-solid-quadruped.png', 64, 64);
   game.load.spritesheet('ant-solid-quad', 'assets/animals/animal-ant-solid-quadruped.png', 64, 64);
-  //game.load.spritesheet('horns-stripes-quad', 'assets/animals/horns-stripes-quadruped.png', 64, 64);
+  game.load.spritesheet('horns-stripes-quad', 'assets/animals/animal-horns-stripes-quadruped.png', 64, 64);
   game.load.spritesheet('ant-stripes-quad', 'assets/animals/animal-ant-stripes-quadruped.png', 64, 64);
-
+  game.load.spritesheet('horns-solid-biped', 'assets/animals/animal-horns-solid-biped.png', 64, 64);
+  game.load.spritesheet('ant-solid-biped', 'assets/animals/animal-ant-solid-biped.png', 64, 64);
+  game.load.spritesheet('horns-stripes-biped', 'assets/animals/animal-horns-stripes-biped.png', 64, 64);
   game.load.spritesheet('ant-stripes-biped', 'assets/animals/animal-ant-stripes-biped.png', 64, 64);
 
   //Music
-  //game.load.audio('song', 'assets/song.wav');
+  game.load.audio('song', ['assets/song.mp3', 'assets/song.ogg']);
 
 };
 
@@ -33,8 +35,8 @@ DesktopState.prototype.create = function() {
 
   console.log("Starting desktop app");
 
-  //song = game.add.audio('song');
-  //song.play();
+  song = game.add.audio('song');
+  song.play();
 
   //Create groups
   backgroundLayer = game.add.group();
@@ -69,8 +71,8 @@ DesktopState.prototype.create = function() {
   var background = game.add.sprite(0, 0, 'background');
   backgroundLayer.add(background);
 
-  this.currentLevel = levels[0];
-  this.startLevel();
+  currentLevel = 0;
+  this.showWinMenu();
 
   cursors = game.input.keyboard.createCursorKeys();
   spacebar = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
@@ -116,8 +118,9 @@ DesktopState.prototype.checkWin = function() {
 };
 
 DesktopState.prototype.nextLevel = function() {
-  this.currentLevel = levels[levels.indexOf(this.currentLevel)+1];
-  socket.emit('setLevel', levels.indexOf(this.currentLevel));
+  currentLevel++;
+  socket.emit('setLevel', currentLevel);
+  console.log(currentLevel);
 };
 
 DesktopState.prototype.clearStage = function() {
@@ -129,14 +132,20 @@ DesktopState.prototype.clearStage = function() {
 
 DesktopState.prototype.startLevel = function() {
 
-  this.currentLevel.loadDesktop();
+  levels[currentLevel].loadDesktop();
+  this.hideWinMenu();
+  this.hideLoseMenu();
+  mobileReady = false;
+  desktopReady = false;
 
 };
 
 DesktopState.prototype.readyUp = function() {
 
   desktopReadyButton.y = -200;
-  socket.emit('readyUp', {});
+  desktopReady = true;
+  socket.emit('readyUpDesktop', {});
+  console.log(currentLevel);
 
 };
 
@@ -200,8 +209,9 @@ DesktopState.prototype.restart = function() {
 
 
 //Socket.io events
-socket.on('readyUp', function(msg){
+socket.on('readyUpMobile', function(msg){
   mobileReady = true;
+  console.log(mobileReady, desktopReady);
 });
 socket.on('restart', function(msg){
   Desktop.prototype.restart();

@@ -23,9 +23,14 @@ io.on('connection', function(socket){
     socket.broadcast.emit('setLevel', msg);
   });
 
-  socket.on('readyUp', function(msg){
-    console.log('ready!');
-    socket.broadcast.emit('readyUp', msg);
+  socket.on('readyUpMobile', function(msg){
+    console.log('Mobile ready!');
+    socket.broadcast.emit('readyUpMobile', msg);
+  });
+
+  socket.on('readyUpDesktop', function(msg){
+    console.log('Desktop ready!');
+    socket.broadcast.emit('readyUpDesktop', msg);
   });
 
   socket.on('win', function(msg){

@@ -50,8 +50,8 @@ MobileState.prototype.create = function() {
     desktopReady = false;
     mobileReady = false;
 
-    this.currentLevel = levels[0];
-    this.currentLevel.loadMobile();
+    currentLevel = 0;
+    this.showWinMenu();
 
 };
 
@@ -66,7 +66,7 @@ MobileState.prototype.readyUp = function() {
 
   mobileReadyButton.y = -200;
   mobileReady = true;
-  socket.emit('readyUp', {});
+  socket.emit('readyUpMobile', {});
 
 };
 
@@ -126,9 +126,11 @@ MobileState.prototype.restart = function() {
 };
 
 MobileState.prototype.startLevel = function() {
-  game.state.getCurrentState().currentLevel.loadMobile();
+  levels[currentLevel].loadMobile();
   MobileState.prototype.hideWinMenu();
   MobileState.prototype.hideLoseMenu();
+  mobileReady = false;
+  desktopReady = false;
 
 };
 
@@ -154,18 +156,18 @@ function gofull() {
 socket.on('penUpdate', function(msg){
   //Correct
   if(msg.satisfied === 1)
-    clueList[msg.id].frame = 2;
+    clueList[msg.id].tint = 0x00FF00;
   //Incorrect
   else if(msg.satisfied === 0)
-    clueList[msg.id].frame = 1;
+    clueList[msg.id].tint = 0xFF0000;
   //Empty
   else if(msg.satisfied === -1)
-    clueList[msg.id].frame = 0;
+    clueList[msg.id].tint = 0xFFFFFF;
 });
 socket.on('setLevel', function(msg){
-  this.currentLevel = levels[msg];
+  currentLevel = msg;
 });
-socket.on('readyUp', function(msg){
+socket.on('readyUpDesktop', function(msg){
   desktopReady = true;
 });
 socket.on('win', function(msg){
@@ -177,18 +179,10 @@ socket.on('win', function(msg){
 //Clue Pens
 function CluePen(x, y, clue) {
 
-  Phaser.Sprite.call(this, game, x, y, 'cluePen');
+  Phaser.Sprite.call(this, game, x, y, clue);
   game.add.existing(this);
   clueList.push(this);
   clueLayer.add(this);
-
-  if(clue === 'horns' || clue === 'ant' || clue === 'stripes' || clue === 'solid' || clue === 'biped' || clue === 'quad')
-    this.clue = clue;
-  else
-    console.log('Invalid clue: ' + clue);
-
-  this.clueImage = game.add.sprite(this.x, this.y, this.clue);
-  clueLayer.add(this.clueImage);
 
 }
 CluePen.prototype = Object.create(Phaser.Sprite.prototype);
