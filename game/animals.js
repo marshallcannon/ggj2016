@@ -54,14 +54,17 @@ Animal.prototype.update = function() {
   }
   else {
     this.flyingTimer = 0;
-    if(this.motX === 0 &&  this.motY === 0)
+    if(!this.caged)
     {
-      if(game.rnd.integerInRange(0,240) === 1)
-        this.startWalking();
-    }
-    else {
-      if(game.rnd.integerInRange(0,300) === 1)
-        this.stopWalking();
+      if(this.motX === 0 &&  this.motY === 0)
+      {
+        if(game.rnd.integerInRange(0,240) === 1)
+          this.startWalking();
+      }
+      else {
+        if(game.rnd.integerInRange(0,300) === 1)
+          this.stopWalking();
+      }
     }
   }
 

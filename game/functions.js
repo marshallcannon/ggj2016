@@ -11,3 +11,11 @@ function checkCollide(hb1, hb2) {
   }
 
 }
+
+function shakeScreen(magnitude) {
+
+  var randX = game.rnd.integerInRange(1, magnitude);
+  var randY = game.rnd.integerInRange(1, magnitude);
+  game.world.setBounds(randX, randY, game.width+randX, game.height+randY);
+
+}
