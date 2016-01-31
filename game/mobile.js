@@ -17,7 +17,7 @@ MobileState.prototype.create = function() {
 
     console.log("Starting mobile app");
     game.scale.setUserScale(window.innerWidth/800, window.innerHeight/600, 0, 0);
-    game.scale.scaleMode = Phaser.ScaleManager.EXACT_FIT;
+    game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
     game.scale.pageAlignHorizontally = true;
     game.scale.fullScreenScaleMod = Phaser.ScaleManager.EXACT_FIT;
     game.input.onDown.add(gofull, this);

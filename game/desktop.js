@@ -9,7 +9,8 @@ DesktopState.prototype.preload = function() {
   game.load.image('background', 'assets/backGround.png');
 
   //Load animals
-  game.load.spritesheet('horns-solid-quad', 'assets/animal-horn-solid-quadruped.png', 64, 64);
+  game.load.spritesheet('horns-solid-quad', 'assets/animals/animal-horn-solid-quadruped.png', 64, 64);
+  game.load.spritesheet('ant-solid-quad', 'assets/animals/animal-ant-solid-quadruped.png', 64, 64);
 
 };
 
@@ -40,6 +41,8 @@ DesktopState.prototype.create = function() {
   this.currentLevel.loadDesktop();
 
   cursors = game.input.keyboard.createCursorKeys();
+  spacebar = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+  spacebar.onDown.add(Player.prototype.kick, player);
 
 };
 
@@ -52,5 +55,10 @@ DesktopState.prototype.update = function() {
 DesktopState.prototype.render = function() {
 
   //game.debug.geom(player.hb, 'rgba(255, 0, 0, .5)');
+
+  //for(var i = 0; i < animalList.length; i++)
+  //{
+  //  game.debug.geom(animalList[i].hb, 'rgba(255, 0, 0, .5)');
+  //}
 
 };

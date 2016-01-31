@@ -38,16 +38,6 @@ Player.prototype.update = function() {
   if(!this.kicking && !cursors.left.isDown && !cursors.right.isDown && !cursors.up.isDown && !cursors.down.isDown)
     this.animations.play('idle');
 
-
-  for(var i = 0; i < animalList.length; i++)
-  {
-    if(!animalList[i].caged)
-    {
-      if(checkCollide(this.hb, animalList[i]))
-        player.kick(animalList[i]);
-    }
-  }
-
 };
 
 Player.prototype.move = function(x, y) {
@@ -68,9 +58,37 @@ Player.prototype.move = function(x, y) {
 
 };
 
-Player.prototype.kick = function(target) {
+Player.prototype.kick = function() {
 
-  target.booted((target.x - this.hb.x) * 0.5, (target.y - this.hb.y) * 0.5);
+  for(var i = 0; i < animalList.length; i++)
+  {
+    if(checkCollide(this.hb, animalList[i].hb))
+      this.boot(animalList[i]);
+  }
+
+};
+
+Player.prototype.boot = function(target) {
+
+  //Get directions
+  var directionX;
+  var directionY;
+  if(target.hb.x > this.hb.x)
+    directionX = 1;
+  else
+    directionX = -1;
+  if(target.hb.y > this.hb.y)
+    directionY = 1;
+  else
+    directionY = -1;
+
+  //Calculate velocity
+  var disX = target.hb.x - this.hb.x;
+  var disY = target.hb.y - this.hb.y;
+  var distance = disX*disX + disY*disY;
+  var motX = (disX*disX)/distance;
+  var motY = (disY*disY)/distance;
+  target.booted(motX * 8 * directionX, motY * 8 * directionY);
 
 };
 

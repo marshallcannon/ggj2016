@@ -42,8 +42,7 @@ Pen.prototype.grabAnimal = function(animal) {
   this.animal.caged = true;
   this.animal.motX = 0;
   this.animal.motY = 0;
-  this.animal.x = this.x + 8;
-  this.animal.y = this.y + 8;
+  this.animal.setPosition(this.x + 8, this.y + 8);
 
   if(this.checkSatisfied())
     socket.emit('penUpdate', {id: penList.indexOf(this), satisfied: true});
