@@ -32,7 +32,7 @@ Pen.prototype.setRequirement = function(input) {
   if(input === 'horns' || input === 'ant' || input === 'stripes' || input === 'solid' || input === 'biped' || input === 'quad')
     this.requirement = input;
   else
-    console.log("Incorrect pen requirement: " + input);
+    console.log("Ivalid pen requirement: " + input);
 
 };
 

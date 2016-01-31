@@ -13,7 +13,6 @@ io.on('connection', function(socket){
 
   socket.on('penUpdate', function(msg){
     socket.broadcast.emit('penUpdate', msg);
-    console.log('penUpdate!');
   });
 
   socket.on('disconnect', function(){

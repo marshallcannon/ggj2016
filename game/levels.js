@@ -22,6 +22,17 @@ var level1 = {
 
   loadMobile: function() {
 
+    //clues
+    var clue1 = new CluePen(200, 200, 'horns');
+    var clue2 = new CluePen(500, 200, 'stripes');
+    var clue3 = new CluePen(200, 400, 'quad');
+    var clue4 = new CluePen(500, 400, 'ant');
+
   }
 
 };
+
+var level2 = {};
+
+//Add levels to array
+levels.push(level1);

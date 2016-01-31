@@ -33,7 +33,7 @@ DesktopState.prototype.create = function() {
   actorLayer.add(player);
 
 
-  this.currentLevel = level1;
+  this.currentLevel = levels[0];
   this.currentLevel.loadDesktop();
 
   cursors = game.input.keyboard.createCursorKeys();

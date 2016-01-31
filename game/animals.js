@@ -67,6 +67,14 @@ Animal.prototype.setAttributes = function(head, coat, ped) {
   if(head === 'horns' || head === 'ant')
     this.head = head;
   else
-    console.log("Incorrect head type");
+    console.log('Invalid head type: ' + head);
+  if(coat === 'solid' || coat === 'stripes')
+    this.coat = coat;
+  else
+    console.log('Invalid coat type: ' + coat);
+  if(ped === 'biped' || ped === 'quad')
+    this.ped = ped;
+  else
+    console.log('Invalid ped type: ' + ped);
 
 };

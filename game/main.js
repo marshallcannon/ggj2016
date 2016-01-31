@@ -6,7 +6,7 @@ function preload() {
 
 }
 
-var player;
+levels = [];
 
 function create() {
 
