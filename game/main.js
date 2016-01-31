@@ -2,11 +2,11 @@ var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create
 
 var socket = io();
 
+var levels = [];
+
 function preload() {
 
 }
-
-levels = [];
 
 function create() {
 

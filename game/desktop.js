@@ -7,6 +7,7 @@ DesktopState.prototype.preload = function() {
   game.load.spritesheet('animalDefault', 'assets/animal.png', 32, 32);
   game.load.image('pen', 'assets/pen.png');
   game.load.image('background', 'assets/backGround.png');
+  game.load.image('shadow', 'assets/shadow.png');
 
   //Load animals
   game.load.spritesheet('horns-solid-quad', 'assets/animals/animal-horns-solid-quadruped.png', 64, 64);
@@ -22,6 +23,7 @@ DesktopState.prototype.create = function() {
 
   //Create groups
   backgroundLayer = game.add.group();
+  shadowLayer = game.add.group();
   actorLayer = game.add.group();
   guiLayer = game.add.group();
 
@@ -87,6 +89,7 @@ DesktopState.nextLevel = function() {
 
 DesktopState.clearStage = function() {
   actorLayer.removeAll();
+  shadowLayer.removeAll();
   animalList = [];
   penList = [];
 };

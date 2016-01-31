@@ -2,12 +2,12 @@ function Animal(x, y, key) {
 
   this.texture = key || 'animalDefault';
   Phaser.Sprite.call(this, game, x, y, this.texture);
-  this.anchor.setTo(0.5, 0.5);
   game.add.existing(this);
   animalList.push(this);
   actorLayer.add(this);
 
   this.flying = false;
+  this.flyingTimer = 0;
   this.caged = false;
   this.cageable = true;
   this.pen = null;
@@ -16,7 +16,10 @@ function Animal(x, y, key) {
   this.hb = new Phaser.Rectangle(x, y, this.width, this.height);
   this.hb.offsetX = Math.abs(this.width)/2;
   this.hb.offsetY = Math.abs(this.height)/2;
-  this.updateSprite();
+
+  this.anchor.setTo(0.5, 0.5);
+  this.shadow = game.add.sprite(this.hb.x, this.hb.y, 'shadow');
+  shadowLayer.add(this.shadow);
 
   //Animations
   this.animations.add('run', [0,1], 5, true);
@@ -33,10 +36,9 @@ Animal.prototype = Object.create(Phaser.Sprite.prototype);
 
 Animal.prototype.update = function() {
 
-
+  //Physics
   if(this.flying)
   {
-    this.move(this.motX, this.motY);
     this.motX *= 0.95;
     this.motY *= 0.95;
 
@@ -45,7 +47,25 @@ Animal.prototype.update = function() {
       this.motX = 0;
       this.motY = 0;
     }
+    if(this.flyingTimer === 0)
+      this.flyingTimer = 2;
+    else
+      this.flyingTimer++;
   }
+  else {
+    this.flyingTimer = 0;
+    if(this.motX === 0 &&  this.motY === 0)
+    {
+      if(game.rnd.integerInRange(0,240) === 1)
+        this.startWalking();
+    }
+    else {
+      if(game.rnd.integerInRange(0,300) === 1)
+        this.stopWalking();
+    }
+  }
+
+  //Graphics
   if(this.motX === 0 && this.motY === 0)
   {
     this.flying = false;
@@ -62,6 +82,9 @@ Animal.prototype.update = function() {
     else
       this.scale.x = 1;
   }
+
+  this.move(this.motX, this.motY);
+  this.updateSprite();
 
 };
 
@@ -93,7 +116,6 @@ Animal.prototype.move = function(x, y) {
   else {
     this.motY *= -1;
   }
-  this.updateSprite();
 
 };
 
@@ -101,7 +123,6 @@ Animal.prototype.move = function(x, y) {
 Animal.prototype.setPosition = function(x, y) {
   this.hb.x = x;
   this.hb.y = y;
-  this.updateSprite();
 };
 
 Animal.prototype.setAttributes = function(head, coat, ped) {
@@ -124,10 +145,28 @@ Animal.prototype.setAttributes = function(head, coat, ped) {
 Animal.prototype.updateSprite = function() {
   this.x = this.hb.x-this.hb.offsetX;
   this.y = this.hb.y-this.hb.offsetY;
+  this.shadow.x = this.hb.x + this.hb.width/2 - this.shadow.width/2;
+  this.shadow.y = this.hb.y + this.hb.height - 12;
+
+  //Bounce Animation
+  if(this.flying)
+  {
+    this.y -= Math.abs(Math.sin(this.flyingTimer/5)*(1/this.flyingTimer*200));
+  }
 };
 
 Animal.prototype.uncage = function() {
   this.caged = false;
+};
+
+Animal.prototype.startWalking = function() {
+  this.motX = game.rnd.integerInRange(1,2);
+  this.motY = game.rnd.integerInRange(1,2);
+};
+
+Animal.prototype.stopWalking = function() {
+  this.motX = 0;
+  this.motY = 0;
 };
 
 
