@@ -15,7 +15,7 @@ var level1 = {
     pen4.setRequirement('ant');
 
     //animals
-    var animal1 = new Animal(300, 300);
+    var animal1 = new HornsSolidQuad(300, 300);
     var animal2 = new Animal(400, 100);
 
   },

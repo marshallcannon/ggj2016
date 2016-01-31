@@ -4,9 +4,12 @@ var DesktopState = function() {
 DesktopState.prototype.preload = function() {
 
   game.load.spritesheet('player', 'assets/player.png', 64, 80);
-  game.load.image('animalDefault', 'assets/animal.png');
+  game.load.spritesheet('animalDefault', 'assets/animal.png', 32, 32);
   game.load.image('pen', 'assets/pen.png');
   game.load.image('background', 'assets/backGround.png');
+
+  //Load animals
+  game.load.spritesheet('horns-solid-quad', 'assets/animal-horn-solid-quadruped.png', 64, 64);
 
 };
 

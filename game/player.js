@@ -41,8 +41,11 @@ Player.prototype.update = function() {
 
   for(var i = 0; i < animalList.length; i++)
   {
-    if(checkCollide(this.hb, animalList[i]))
-      player.kick(animalList[i]);
+    if(!animalList[i].caged)
+    {
+      if(checkCollide(this.hb, animalList[i]))
+        player.kick(animalList[i]);
+    }
   }
 
 };

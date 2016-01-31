@@ -2,6 +2,7 @@ function Animal(x, y, key) {
 
   this.texture = key || 'animalDefault';
   Phaser.Sprite.call(this, game, x, y, this.texture);
+  this.anchor.setTo(0.5, 0.5);
   game.add.existing(this);
   animalList.push(this);
   actorLayer.add(this);
@@ -10,6 +11,11 @@ function Animal(x, y, key) {
   this.caged = false;
   this.motX = 0;
   this.motY = 0;
+
+  //Animations
+  this.animations.add('run', [0,1], 5, true);
+  this.animations.add('fly', [2,3], 5, true);
+  this.animations.add('idle', [4,5], 5, true);
 
   //Attributes
   this.head = null;
@@ -35,6 +41,20 @@ Animal.prototype.update = function() {
         this.motY = 0;
       }
     }
+  }
+
+  if(this.motX === 0 && this.motY === 0)
+    this.animations.play('idle');
+  else {
+    if(this.flying)
+      this.animations.play('fly');
+    else
+      this.animations.play('run');
+    //Change Direction
+    if(this.motX > 0)
+      this.scale.x = -1;
+    else
+      this.scale.x = 1;
   }
 
 };
@@ -78,3 +98,14 @@ Animal.prototype.setAttributes = function(head, coat, ped) {
     console.log('Invalid ped type: ' + ped);
 
 };
+
+
+/***************************************
+**********ANIMAL VARIATIONS*************
+***************************************/
+
+function HornsSolidQuad(x, y) {
+  Animal.call(this, x, y, 'horns-solid-quad');
+  this.setAttributes('horns', 'solid', 'quad');
+}
+HornsSolidQuad.prototype = Object.create(Animal.prototype);

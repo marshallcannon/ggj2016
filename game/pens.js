@@ -40,6 +40,8 @@ Pen.prototype.grabAnimal = function(animal) {
 
   this.animal = animal;
   this.animal.caged = true;
+  this.animal.motX = 0;
+  this.animal.motY = 0;
   this.animal.x = this.x + 8;
   this.animal.y = this.y + 8;
 
