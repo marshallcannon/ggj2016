@@ -20,10 +20,18 @@ MobileState.prototype.create = function() {
     game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
     game.scale.pageAlignHorizontally = true;
     game.scale.fullScreenScaleMod = Phaser.ScaleManager.EXACT_FIT;
-    game.input.onDown.add(gofull, this);
+    //game.input.onDown.add(gofull, this);
     game.stage.backgroundColor = '#FFCC99';
 
+    //List of all clue pens
     clueList = [];
+    //Also a group of clue pens because spaghetti
+    backgroundLayer = game.add.group();
+    clueLayer = game.add.group();
+
+    //Flags to Keep Devices in Sync
+    desktopReady = false;
+    mobileReady = false;
 
     this.currentLevel = levels[0];
     this.currentLevel.loadMobile();
@@ -32,6 +40,22 @@ MobileState.prototype.create = function() {
 
 MobileState.prototype.update = function() {
 
+};
+
+MobileState.prototype.readyUp = function() {
+
+  readyButton.y = -200;
+  socket.emit('readyUp', {});
+
+};
+
+MobileState.prototype.startLevel = function() {
+  this.currentLevel.loadMobile();
+};
+
+MobileState.prototype.clearStage = function() {
+  clueLayer.removeAll();
+  clueList = [];
 };
 
 function gofull() {
@@ -61,6 +85,9 @@ socket.on('penUpdate', function(msg){
 });
 socket.on('setLevel', function(msg){
   this.currentLevel = levels[msg];
+});
+socket.on('readyUp', function(msg){
+  desktopReady = true;
 });
 
 //Clue Pens

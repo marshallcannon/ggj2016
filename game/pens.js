@@ -41,6 +41,7 @@ Pen.prototype.setRequirement = function(input) {
 
 Pen.prototype.grabAnimal = function(animal) {
 
+  console.log(this.animal);
   this.animal = animal;
   this.animal.caged = true;
   this.animal.motX = 0;
@@ -59,7 +60,9 @@ Pen.prototype.grabAnimal = function(animal) {
     socket.emit('penUpdate', {id: penList.indexOf(this), satisfied: 0});
   }
 
-  DesktopState.checkWin();
+  console.log(this.animal);
+
+  DesktopState.prototype.checkWin();
 
 };
 

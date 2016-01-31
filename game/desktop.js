@@ -9,11 +9,14 @@ DesktopState.prototype.preload = function() {
   game.load.image('background', 'assets/backGround.png');
   game.load.image('shadow', 'assets/shadow.png');
 
+
   //Load animals
   game.load.spritesheet('horns-solid-quad', 'assets/animals/animal-horns-solid-quadruped.png', 64, 64);
   game.load.spritesheet('ant-solid-quad', 'assets/animals/animal-ant-solid-quadruped.png', 64, 64);
   //game.load.spritesheet('horns-stripes-quad', 'assets/animals/horns-stripes-quadruped.png', 64, 64);
   game.load.spritesheet('ant-stripes-quad', 'assets/animals/animal-ant-stripes-quadruped.png', 64, 64);
+
+  game.load.spritesheet('ant-stripes-biped', 'assets/animals/animal-ant-stripes-biped.png', 64, 64);
 
 };
 
@@ -31,18 +34,21 @@ DesktopState.prototype.create = function() {
   animalList = [];
   penList = [];
 
-  //Background
-  var background = game.add.sprite(0, 0, 'background');
-  backgroundLayer.add(background);
+  //Flags to Keep Devices in Sync
+  desktopReady = false;
+  mobileReady = false;
 
   //Create player
   player = new Player();
   game.add.existing(player);
   actorLayer.add(player);
 
+  //Background
+  var background = game.add.sprite(0, 0, 'background');
+  backgroundLayer.add(background);
 
   this.currentLevel = levels[0];
-  this.currentLevel.loadDesktop();
+  this.startLevel();
 
   cursors = game.input.keyboard.createCursorKeys();
   spacebar = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
@@ -67,7 +73,7 @@ DesktopState.prototype.render = function() {
 
 };
 
-DesktopState.checkWin = function() {
+DesktopState.prototype.checkWin = function() {
 
   for(var i = 0; i < penList.length; i++)
   {
@@ -82,14 +88,64 @@ DesktopState.checkWin = function() {
 
 };
 
-DesktopState.nextLevel = function() {
+DesktopState.prototype.nextLevel = function() {
   this.currentLevel = levels[levels.indexOf(this.currentLevel)+1];
   socket.emit('setLevel', levels.indexOf(this.currentLevel));
 };
 
-DesktopState.clearStage = function() {
+DesktopState.prototype.clearStage = function() {
   actorLayer.removeAll();
   shadowLayer.removeAll();
   animalList = [];
   penList = [];
 };
+
+DesktopState.prototype.startLevel = function() {
+
+  this.currentLevel.loadDesktop();
+
+};
+
+DesktopState.prototype.readyUp = function() {
+
+  readyButton.y = -200;
+  socket.emit('readyUp', {});
+
+};
+
+showWinMenu = function() {
+
+  waitingSprite.y = game.height/2-waitingSprite.height/2;
+  readyButton.y = game.height/2-readyButton.height/2;
+
+};
+
+hideWinMenu = function() {
+
+  waitingSprite.y = -200;
+  readyButton.y = -200;
+
+};
+
+showLoseMenu = function() {
+
+};
+
+hideLoseMenu = function() {
+
+};
+
+showCompleteMenu = function() {
+
+};
+
+hideCompleteMenu = function() {
+
+};
+
+
+
+//Socket.io events
+socket.on('readyUp', function(msg){
+  mobileReady = true;
+});

@@ -22,6 +22,10 @@ io.on('connection', function(socket){
   socket.on('setLevel', function(msg){
     socket.broadcast.emit('setLevel', msg);
   });
+
+  socket.on('readUp', function(msg){
+    socket.broadcast.emit('readyUp', msg);
+  });
 });
 
 http.listen(3000, function(){

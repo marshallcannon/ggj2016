@@ -2,7 +2,12 @@ var level1 = {
 
   loadDesktop: function() {
 
+    //player
+    if(!player)
+      player = new Player();
     player.setPosition(100, 100);
+    game.add.existing(player);
+    actorLayer.add(player);
 
     //pens
     var pen1 = new Pen(200, 200);
