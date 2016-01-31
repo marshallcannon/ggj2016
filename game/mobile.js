@@ -1,12 +1,11 @@
 var MobileState = function() {
 };
-MobileState.prototype = {
 
-  preload: function() {
+MobileState.prototype.preload = function() {
 
-  },
+};
 
-  create: function() {
+MobileState.prototype.create = function() {
 
     console.log("Starting mobile app");
     game.scale.setUserScale(window.innerWidth/800, window.innerHeight/600, 0, 0);
@@ -14,7 +13,9 @@ MobileState.prototype = {
     game.scale.fullScreenScaleMod = Phaser.ScaleManager.EXACT_FIT;
     game.input.onDown.add(gofull, this);
 
-  }
+};
+
+MobileState.prototype.update = function() {
 
 };
 
@@ -30,3 +31,8 @@ function gofull() {
     }
 
 }
+
+//Socket.io events
+socket.on('penUpdate', function(msg){
+  console.log(msg);
+});

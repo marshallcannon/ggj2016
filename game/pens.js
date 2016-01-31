@@ -20,12 +20,7 @@ Pen.prototype.update = function() {
     if(checkCollide(this.hb, animalList[i]))
     {
       if(this.animal === null)
-      {
-        this.animal = animalList[i];
-        this.animal.caged = true;
-        this.animal.x = this.x + 8;
-        this.animal.y = this.y + 8;
-      }
+        this.grabAnimal(animalList[i]);
     }
 
   }
@@ -38,5 +33,41 @@ Pen.prototype.setRequirement = function(input) {
     this.requirement = input;
   else
     console.log("Incorrect pen requirement: " + input);
+
+};
+
+Pen.prototype.grabAnimal = function(animal) {
+
+  this.animal = animal;
+  this.animal.caged = true;
+  this.animal.x = this.x + 8;
+  this.animal.y = this.y + 8;
+
+  if(this.checkSatisfied())
+    socket.emit('penUpdate', {id: penList.indexOf(this), satisfied: true});
+  else
+    socket.emit('penUpdate', {id: penList.indexOf(this), satisfied: false});
+
+};
+
+Pen.prototype.releaseAnimal = function(animal) {
+
+};
+
+Pen.prototype.checkSatisfied = function() {
+
+  if(this.animal)
+  {
+    if(this.animal.head === this.requirement || this.animal.coat === this.requirement || this.animal.ped === this.requirement)
+    {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+  else {
+    return false;
+  }
 
 };
