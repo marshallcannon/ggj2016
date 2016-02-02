@@ -46,13 +46,11 @@ var level2 = {
   loadDesktop: function() {
 
     //player
-    if(!player)
-    {
-      player = new Player();
-      game.add.existing(player);
-      actorLayer.add(player);
-    }
+    player = new Player();
+    game.add.existing(player);
+    actorLayer.add(player);
     player.setPosition(400, 300);
+    spacebar.onDown.add(Player.prototype.kick, player);
 
     //pens
     var pen1 = new Pen(100, 300);

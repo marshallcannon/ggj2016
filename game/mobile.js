@@ -52,6 +52,7 @@ MobileState.prototype.create = function() {
 
     currentLevel = 0;
     this.showWinMenu();
+    winText.y = -200;
 
 };
 

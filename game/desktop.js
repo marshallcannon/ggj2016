@@ -35,6 +35,9 @@ DesktopState.prototype.create = function() {
 
   console.log("Starting desktop app");
 
+  game.scale.pageAlignHorizontally = true;
+  game.scale.pageAlignVertically = true;
+
   song = game.add.audio('song');
   song.play();
 
@@ -73,6 +76,7 @@ DesktopState.prototype.create = function() {
 
   currentLevel = 0;
   this.showWinMenu();
+  winText.y = -200;
 
   cursors = game.input.keyboard.createCursorKeys();
   spacebar = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
